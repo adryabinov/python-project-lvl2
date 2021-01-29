@@ -13,7 +13,7 @@ python = "^3.8"
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
-gendiff = ""
+gendiff = "gendiff.scripts.gendiff"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
