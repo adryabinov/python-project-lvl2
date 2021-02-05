@@ -7,3 +7,7 @@ def arg_parse():
     parser.add_argument('--format','-f', help='set format of output')
 
     return parser.parse_args()
+
+
+def sample(x):
+    return x * 2
