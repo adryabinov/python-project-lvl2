@@ -1,9 +1,3 @@
-lint:
-	poetry run flake8 gendiff
-
-build:
-	poetry build
-
 install:
 	poetry install
 
@@ -13,4 +7,18 @@ publish:
 package-install:
 	pip install --user dist/*.whl
 
-.PHONY: lint build install publish
+test:
+	poetry run pytest gendiff tests
+
+lint:
+	poetry run flake8 gendiff
+
+selfcheck:
+	poetry check
+
+check: selfcheck test lint
+
+build: check
+	poetry build
+
+.PHONY: install test lint selfcheck check build publish
