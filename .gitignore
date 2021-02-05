@@ -3,5 +3,4 @@
 /.idea/*
 /dist/*
 **/__pycache__/*
-__init__.py
 /test/*
