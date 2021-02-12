@@ -1,7 +1,7 @@
 import argparse
 
 
-def arg_parse():
+def parse_arguments():
     parser = argparse.ArgumentParser(description='Generate diff')
     parser.add_argument('first_file')
     parser.add_argument('second_file')
@@ -9,6 +9,3 @@ def arg_parse():
 
     return parser.parse_args()
 
-
-def sample(x):
-    return x * 2

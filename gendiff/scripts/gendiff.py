@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-import gendiff.parser_input
+from gendiff.parse_input import parse_input
 
 
 def main():
-    print(gendiff.parser_input.arg_parse())
+    args = parse_input()
+    print(args.first_file)
 
 
 if __name__ == '__main__':
