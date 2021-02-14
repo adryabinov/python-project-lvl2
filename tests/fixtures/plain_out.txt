@@ -6,3 +6,23 @@
   + timeout: 20
   + verbose: true
 }
+
+
+{
+    'removed': [{
+        'name': 'group2',
+        'value': {
+            'abc': 12345,
+            'deep': {
+                'id': 45
+    }}}],
+    'added': [{
+        'name': 'group3',
+        'value': {
+            'deep': {
+                'id': {
+                    'number': 45}},
+                    'fee': 100500}}],
+    'changed': [],
+    'stayed': [{
+        'removed': [{'name': 'setting2', 'value': 200}], 'added': [{'name': 'follow', 'value': False}, {'name': 'setting4', 'value': 'blah blah'}, {'name': 'setting5', 'value': {'key5': 'value5'}}], 'changed': [{'name': 'setting3', 'values': (True, None)}], 'stayed': [{'name': 'setting1', 'value': 'Value 1'}, {'removed': [], 'added': [{'name': 'ops', 'value': 'vops'}], 'changed': [], 'stayed': [{'removed': [], 'added': [], 'changed': [{'name': 'wow', 'values': ('', 'so much')}], 'stayed': []}, {'name': 'key', 'value': 'value'}]}]}, {'removed': [], 'added': [], 'changed': [{'name': 'baz', 'values': ('bas', 'bars')}, {'name': 'nest', 'values': ({'key': 'value'}, 'str')}], 'stayed': [{'name': 'foo', 'value': 'bar'}]}]}
