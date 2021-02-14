@@ -1,10 +1,11 @@
-from gendiff.parser import parse_file
+from gendiff.parser import load_file
 
 
 def generate_diff(path1, path2):
-    data1 = parse_file(path1)
-    data2 = parse_file(path2)
-    return make_diff(data1, data2)
+    return make_diff(
+        load_file(path1),
+        load_file(path2)
+    )
 
 
 def make_diff(data1, data2):
@@ -20,7 +21,7 @@ def make_diff(data1, data2):
         diff.append({
             'name': key,
             'value': data2[key],
-            'type': 'added'
+            'type': 'added',
         })
 
     for key in data2.keys() & data1.keys():
@@ -42,9 +43,6 @@ def make_diff(data1, data2):
                     'name': key,
                     'old_value': data1[key],
                     'new_value': data2[key],
-                    'type': 'updated'
+                    'type': 'updated',
                 })
-    return diff
-
-
-
+    return sorted(diff, key=lambda x: x['name'])
