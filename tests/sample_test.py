@@ -6,7 +6,7 @@ import os
 import pytest
 
 import gendiff.makediff
-import gendiff.makeout
+import gendiff.format
 import gendiff.parser
 
 file1_out = json.load(open(os.path.abspath('tests/fixtures/file1.json')))

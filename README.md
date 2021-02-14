@@ -3,7 +3,7 @@
 
 # Gendiff
 
-Gendiff generate diff-log of 2 tree in YAML or JSON.
+Gendiff generate diff-log of 2 files in YAML or JSON.
 
 ## Installation
 
