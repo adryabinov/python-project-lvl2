@@ -42,7 +42,7 @@ def make_diff(data1, data2):
                     'name': key,
                     'old_value': data1[key],
                     'new_value': data2[key],
-                    'type': 'changed',
+                    'type': 'updated'
                 })
     return diff
 

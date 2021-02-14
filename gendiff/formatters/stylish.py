@@ -1,11 +1,12 @@
 def format_data(diff_data, deep=0):
     out = ''
-    for item in diff_data:
+
+    for item in sorted(diff_data, key=lambda x: x['name']):
         if item['type'] == 'removed':
             out += '\n' + (deep*'   ' + '-' + str(item['name']) + ': ' + str(value_format(item['value'], (deep + 1))))
         if item['type'] == 'added':
             out += '\n' + (deep*'   ' + '+' + str(item['name']) + ': ' + str(value_format(item['value'], (deep + 1))))
-        if item['type'] == 'changed':
+        if item['type'] == 'updated':
             out += '\n' + (deep*'   ' + '-' + str(item['name']) + ': ' + str(value_format(item['old_value'], (deep + 1))))
             out += '\n' + (deep*'   ' + '+' + str(item['name']) + ': ' + str(value_format(item['new_value'], (deep + 1))))
         if item['type'] == 'stand':
