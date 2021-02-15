@@ -1,52 +1,47 @@
-INDENT = '   '
+INDENT = '    '
+REMOVED = '  - '
+ADDED = '  + '
+STAND = INDENT
 
 TYPE_TO_STR = {
     'removed':
         lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}-{x['name']}: {value_format(x['value'], deep)}",
+        f"\n{deep * indent}{REMOVED}{x['name']}: {value_format(x['value'], deep + 1)}",
     'added':
         lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}+{x['name']}: {value_format(x['value'], deep)}",
+        f"\n{deep * indent}{ADDED}{x['name']}: {value_format(x['value'], deep + 1)}",
     'updated':
         lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}-{x['name']}: {value_format(x['old_value'], deep)}"
-        f"\n{deep * indent}+{x['name']}: {value_format(x['new_value'], deep)}",
+        f"\n{deep * indent}{REMOVED}{x['name']}: {value_format(x['old_value'], deep + 1)}"
+        f"\n{deep * indent}{ADDED}{x['name']}: {value_format(x['new_value'], deep + 1)}",
     'stand':
         lambda x, deep, indent=INDENT:
-        f"\n{deep * indent} {x['name']}:"
+        f"\n{deep * indent}{STAND}{x['name']}: "
         f"{format_diff(x['children'], deep + 1)}"
         if ('children' in x) else
-        f"\n{deep * indent} {x['name']}: {value_format(x['value'], deep)}"
+        f"\n{deep * indent}{STAND}{x['name']}: {value_format(x['value'],deep + 1)}"
 }
 
 
-def format_diff(diff, deep=0):
+def format_diff(diff, deep=0, indent=INDENT):
     out = ''
     for item in diff:
-        out += TYPE_TO_STR[item['type']](item, deep)
-    return out.replace('\n\n', '\n')
+        try:
+            out += TYPE_TO_STR[item['type']](item, deep)
+        except KeyError:
+            raise ValueError(f"'{item['type']}' is no such node type")
+    return f"{{{out}\n{deep * indent}}}\n".replace('\n\n', '\n')
 
 
-def dict2strings(dicto, deep):
-    strings = []
-    for key in dicto:
-        if isinstance(dicto[key], dict):
-            strings.append((deep, key + ':'))
-            dict2strings(dicto[key], deep + 1)
-        else:
-            strings.append((deep, key + ': ' + str(dicto[key])))
-    return strings
-
-
-def strings2out(strings):
-    out = ''
-    for item in strings:
-        out += f"{item[0] * INDENT}{item[1]}\n"
-
-    return out
-
-
-def value_format(value, deep):
+def value_format(value, deep, indent=INDENT):
     if isinstance(value, dict):
-        return f"\n{strings2out(dict2strings(value, deep + 1))}"
+        out = '{'
+        for key in value:
+            out += f"\n{(deep + 1) * indent}{key}: "
+            out += value_format(value[key], deep + 1)
+        return out + f'\n{deep * indent}}}'
+    if isinstance(value, bool):
+        return f'{str(value).lower()}'
+    if value is None:
+        return 'null'
     return f'{value}'

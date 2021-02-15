@@ -1,31 +1,37 @@
 TYPE_TO_STR = {
     'removed':
-        lambda x, parent:
-        f"\nProperty \'{parent}{x['name']}\' was removed.",
+        lambda item, parent:
+        f"\nProperty \'{parent}{item['name']}\' was removed",
     'added':
-        lambda x, parent:
-        f"\nProperty \'{parent}{x['name']}\'"
-        f"was added with value: {value_format(x['value'])}.",
+        lambda item, parent:
+        f"\nProperty \'{parent}{item['name']}\'"
+        f" was added with value: {format_value(item['value'])}",
     'updated':
-        lambda x, parent:
-        f"\nProperty \'{parent}{x['name']}\'"
-        f"was updated with value: {value_format(x['old_value'])}"
-        f" to value: {value_format(x['new_value'])}.",
+        lambda item, parent:
+        f"\nProperty \'{parent}{item['name']}\'"
+        f" was updated. From value: {format_value(item['old_value'])}"
+        f" to {format_value(item['new_value'])}",
     'stand':
-        lambda x, parent:
+        lambda item, parent:
         format_diff(
-            x['children'],
-            f"{parent}{x['name']}."
-        ) if ('children' in x) else ''
+            item['children'],
+            f"{parent}{item['name']}."
+        ) if ('children' in item) else ''
 }
 
 
-def value_format(value):
-    return '[complex value]' if isinstance(value, dict) else f'\'{value}\''
+def format_value(value):
+    return '[complex value]' if isinstance(value, dict) \
+        else str(value).lower() if isinstance(value, bool) \
+        else 'null' if (value is None) \
+        else f'\'{value}\''
 
 
 def format_diff(diff, parent=''):
     out = ''
     for item in diff:
-        out += TYPE_TO_STR[item['type']](item, parent)
-    return out.replace('\n\n', '\n')
+        try:
+            out += TYPE_TO_STR[item['type']](item, parent)
+        except KeyError:
+            raise ValueError(f"'{item['type']}' is no such node type")
+    return f"{out}\n".replace('\n\n', '\n')

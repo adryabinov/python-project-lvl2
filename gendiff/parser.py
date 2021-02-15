@@ -24,5 +24,4 @@ def parse_arguments():
                         '-f',
                         default='stylish',
                         help='set format of output')
-
     return parser.parse_args()
