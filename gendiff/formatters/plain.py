@@ -31,8 +31,5 @@ def format_value(value):
 def format_diff(diff, parent=''):
     out = ''
     for item in diff:
-        try:
-            out += TYPE_TO_STR[item['type']](item, parent)
-        except KeyError:
-            raise ValueError(f"'{item['type']}' is no such node type")
+        out += TYPE_TO_STR[item['type']](item, parent)
     return out.rstrip("\n")
