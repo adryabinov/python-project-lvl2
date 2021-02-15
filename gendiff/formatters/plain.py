@@ -34,4 +34,4 @@ def format_diff(diff, parent=''):
             out += TYPE_TO_STR[item['type']](item, parent)
         except KeyError:
             raise ValueError(f"'{item['type']}' is no such node type")
-    return f"{out}\n".replace('\n\n', '\n')
+    return f"{out}".replace('\n\n', '\n')
