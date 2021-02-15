@@ -1,16 +1,16 @@
 TYPE_TO_STR = {
     'removed':
         lambda item, parent:
-        f"\nProperty \'{parent}{item['name']}\' was removed",
+        f"Property \'{parent}{item['name']}\' was removed\n",
     'added':
         lambda item, parent:
-        f"\nProperty \'{parent}{item['name']}\'"
-        f" was added with value: {format_value(item['value'])}",
+        f"Property \'{parent}{item['name']}\'"
+        f" was added with value: {format_value(item['value'])}\n",
     'updated':
         lambda item, parent:
-        f"\nProperty \'{parent}{item['name']}\'"
-        f" was updated. From value: {format_value(item['old_value'])}"
-        f" to {format_value(item['new_value'])}",
+        f"Property \'{parent}{item['name']}\'"
+        f" was updated. From {format_value(item['old_value'])}"
+        f" to {format_value(item['new_value'])}\n",
     'stand':
         lambda item, parent:
         format_diff(
