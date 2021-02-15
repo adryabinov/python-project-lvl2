@@ -31,17 +31,17 @@ TYPE_TO_STR = {
 def format_diff(diff, deep=0, indent=INDENT):
     out = "{"
     for item in diff:
-        out = out + (TYPE_TO_STR[item['type']](item, deep))
-    return out + '\n' + (deep * indent) + "}"
+        out += TYPE_TO_STR[item['type']](item, deep)
+    return f"{out}\n{deep * indent}}}"
 
 
 def value_format(value, deep, indent=INDENT):
     if isinstance(value, dict):
         out = '{'
         for key in value:
-            out += ("\n" + ((deep + 1) * indent) + str(key) + ": ")
+            out += f"\n{(deep + 1) * indent}{key}: "
             out += (value_format(value[key], deep + 1))
-        return out + '\n' + (deep * indent) + "}"
+        return f"{out}\n{deep * indent}}}"
     if isinstance(value, bool):
         return str(value).lower()
     if value is None:
