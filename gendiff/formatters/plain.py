@@ -24,6 +24,7 @@ def format_value(value):
     return '[complex value]' if isinstance(value, dict) \
         else str(value).lower() if isinstance(value, bool) \
         else 'null' if (value is None) \
+        else value if (format(value) == int) \
         else f'\'{value}\''
 
 
