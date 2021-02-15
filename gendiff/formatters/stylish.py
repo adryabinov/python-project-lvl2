@@ -6,26 +6,32 @@ STAND = INDENT
 TYPE_TO_STR = {
     'removed':
         lambda item, deep, indent=INDENT:
-        '\n' + (deep * indent) + REMOVED + item['name'] + ': ' + value_format(item['value'], deep + 1),
+        f"\n{deep * indent}{REMOVED}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}",
     'added':
         lambda item, deep, indent=INDENT:
-        '\n' + (deep * indent) + ADDED + item['name'] + ': ' + value_format(item['value'], deep + 1),
+        f"\n{deep * indent}{ADDED}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}",
     'updated':
         lambda item, deep, indent=INDENT:
-        '\n' + (deep * indent) + REMOVED + item['name'] + ': ' + value_format(item['old_value'], deep + 1) +
-        '\n' + (deep * indent) + ADDED + item['name'] + ': ' + value_format(item['new_value'], deep + 1),
+        f"\n{deep * indent}{REMOVED}{item['name']}: "
+        f"{value_format(item['old_value'], deep + 1)}"
+        f"\n{deep * indent}{ADDED}{item['name']}: "
+        f"{value_format(item['new_value'], deep + 1)}",
     'stand':
         lambda item, deep, indent=INDENT:
-        '\n' + (deep * indent) + STAND + item['name'] + ": " + format_diff(item['children'], deep + 1)
+        f"\n{deep * indent}{STAND}{item['name']}: "
+        f"{format_diff(item['children'], deep + 1)}"
         if ('children' in item) else
-        '\n' + (deep * indent) + STAND + item['name'] + ": " + value_format(item['value'], deep + 1)
+        f"\n{deep * indent}{STAND}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}"
 }
 
 
 def format_diff(diff, deep=0, indent=INDENT):
     out = "{"
     for item in diff:
-            out = out + (TYPE_TO_STR[item['type']](item, deep))
+        out = out + (TYPE_TO_STR[item['type']](item, deep))
     return out + '\n' + (deep * indent) + "}"
 
 
