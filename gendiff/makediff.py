@@ -1,11 +1,12 @@
 from gendiff.load import load_file
+from gendiff.format import format_diff
 
 
-def generate_diff(path1, path2):
-    return make_diff(
+def generate_diff(path1, path2, formatter='stylish'):
+    return format_diff(make_diff(
         load_file(path1),
         load_file(path2)
-    )
+    ), formatter)
 
 
 def make_diff(data1, data2):
