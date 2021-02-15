@@ -4,7 +4,7 @@ from gendiff import generate_diff
 
 
 def test_gendiff_compare_plain_is_empty():
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json', 'plain') == '\n\n'
+    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file1.json', 'plain') == ''
 
 
 def test_gendiff_stylish_default():
@@ -19,7 +19,7 @@ def test_gendiff_yaml_load():
 
 def test_gendiff_plain():
     out = open('tests/fixtures/plain_out')
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json', 'plain') == out.read() + '  '
+    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json', 'plain') == out.read()
 
 
 def test_gendiff_stylish():
