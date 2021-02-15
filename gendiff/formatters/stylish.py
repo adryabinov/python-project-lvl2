@@ -31,7 +31,7 @@ def format_diff(diff, deep=0, indent=INDENT):
 
 def value_format(value, deep, indent=INDENT):
     if isinstance(value, dict):
-        out = ''
+        out = '{'
         for key in value:
             out += ("\n" + ((deep + 1) * indent) + str(key) + ": ")
             out += (value_format(value[key], deep + 1))
