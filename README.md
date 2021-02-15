@@ -21,22 +21,34 @@ make package-install
 ```bash
 gendiff FIRST_PATH SECOND_PATH -format format(OPTIONAL)
 ```
-work ws .json (JSON):
+work vs .json (JSON):
+
 [![asciicast](https://asciinema.org/a/cgYbVBRLdYDLPnDrYJMnAkLZv.svg)](https://asciinema.org/a/cgYbVBRLdYDLPnDrYJMnAkLZv)
 
-work ws .yml .yaml (YаML):
+
+work vs .yml .yaml (YаML):
+
 [![asciicast](https://asciinema.org/a/0wx8jBosiZ7A5aLn9PGPI4K6G.svg)](https://asciinema.org/a/0wx8jBosiZ7A5aLn9PGPI4K6G)
 [![asciicast](https://asciinema.org/a/PnmXPz7WQ8TKFV5tbksW4N21o.svg)](https://asciinema.org/a/PnmXPz7WQ8TKFV5tbksW4N21o)
 
+
 out formats: -format(-f) stylish(json-like, DEFAULT), json, plain:
+
+
 stylish:
+
 [![asciicast](https://asciinema.org/a/O3ZvjRTBvWr0CPAHPotOvZXR7.svg)](https://asciinema.org/a/O3ZvjRTBvWr0CPAHPotOvZXR7)
 
+
 json:
+
 [![asciicast](https://asciinema.org/a/kLxafvAwxUb32w1u84xQM75Im.svg)](https://asciinema.org/a/kLxafvAwxUb32w1u84xQM75Im)
 
+
 plain:
+
 [![asciicast](https://asciinema.org/a/mpz3Y12yVSchW1u9xgdkMdimA.svg)](https://asciinema.org/a/mpz3Y12yVSchW1u9xgdkMdimA)
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
