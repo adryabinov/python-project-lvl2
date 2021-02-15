@@ -5,21 +5,26 @@ STAND = INDENT
 
 TYPE_TO_STR = {
     'removed':
-        lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}{REMOVED}{x['name']}: {value_format(x['value'], deep + 1)}",
+        lambda item, deep, indent=INDENT:
+        f"\n{deep * indent}{REMOVED}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}",
     'added':
-        lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}{ADDED}{x['name']}: {value_format(x['value'], deep + 1)}",
+        lambda item, deep, indent=INDENT:
+        f"\n{deep * indent}{ADDED}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}",
     'updated':
-        lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}{REMOVED}{x['name']}: {value_format(x['old_value'], deep + 1)}"
-        f"\n{deep * indent}{ADDED}{x['name']}: {value_format(x['new_value'], deep + 1)}",
+        lambda item, deep, indent=INDENT:
+        f"\n{deep * indent}{REMOVED}{item['name']}: "
+        f"{value_format(item['old_value'], deep + 1)}"
+        f"\n{deep * indent}{ADDED}{item['name']}: "
+        f"{value_format(item['new_value'], deep + 1)}",
     'stand':
-        lambda x, deep, indent=INDENT:
-        f"\n{deep * indent}{STAND}{x['name']}: "
-        f"{format_diff(x['children'], deep + 1)}"
-        if ('children' in x) else
-        f"\n{deep * indent}{STAND}{x['name']}: {value_format(x['value'],deep + 1)}"
+        lambda item, deep, indent=INDENT:
+        f"\n{deep * indent}{STAND}{item['name']}: "
+        f"{format_diff(item['children'], deep + 1)}"
+        if ('children' in item) else
+        f"\n{deep * indent}{STAND}{item['name']}: "
+        f"{value_format(item['value'], deep + 1)}"
 }
 
 
@@ -29,7 +34,8 @@ def format_diff(diff, deep=0, indent=INDENT):
         try:
             out += TYPE_TO_STR[item['type']](item, deep)
         except KeyError:
-            raise ValueError(f"'{item['type']}' is no such node type")
+            raise ValueError(f"'{item['type']}' "
+                             f"is no such node type")
     return f"{{{out}\n{deep * indent}}}\n".replace('\n\n', '\n')
 
 

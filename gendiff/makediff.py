@@ -1,4 +1,4 @@
-from gendiff.parser import load_file
+from gendiff.load import load_file
 
 
 def generate_diff(path1, path2):
