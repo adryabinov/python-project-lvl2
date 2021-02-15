@@ -16,7 +16,7 @@ TYPE_TO_STR = {
         format_diff(
             item['children'],
             f"{parent}{item['name']}."
-        ) if ('children' in item) else ''
+        ) + '\n' if ('children' in item) else ''
 }
 
 
@@ -35,4 +35,4 @@ def format_diff(diff, parent=''):
             out += TYPE_TO_STR[item['type']](item, parent)
         except KeyError:
             raise ValueError(f"'{item['type']}' is no such node type")
-    return f"{out}".replace('\n\n', '\n')
+    return out.rstrip("\n")
