@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "console tool to generate diff of 2 structured files"
 authors = ["andrejrabinov <andryabinov@gmail.com>"]
+license = "MIT"
 packages = [
     { include = "gendiff" },
 ]
