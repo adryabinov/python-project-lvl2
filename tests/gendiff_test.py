@@ -1,7 +1,6 @@
 import pytest
 import os
 from pathlib import Path
-import json
 from gendiff.comparator import generate_diff
 from gendiff.data_parser import supported_suffixes as suffixes
 from gendiff.formatter import output_formats as formats
