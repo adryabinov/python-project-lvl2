@@ -30,4 +30,4 @@ jobs:
           coverageCommand: make test
           debug: true
         env:
-          CC_TEST_REPORTER_ID: 31259d39b3bfb182b5c719e03c92cebef9e48c0ba10bfd804527b6379f493abf
+          CC_TEST_REPORTER_ID: ${{ secrets.COCL_KEY }}
