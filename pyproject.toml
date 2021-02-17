@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = "console tool to generate diff of 2 structured files"
+description = "generate diff-log of 2 files in YAML or JSON"
 authors = ["andrejrabinov <andryabinov@gmail.com>"]
 license = "MIT"
 packages = [
