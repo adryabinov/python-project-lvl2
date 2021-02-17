@@ -10,7 +10,14 @@ EXT_TO_LOADER = {
     '.json': lambda x: json.load(open(x)),
 }
 
+supported_ext = list(EXT_TO_LOADER.keys())
+
 
 def load_file(path):
     ext = Path(path).suffix
-    return EXT_TO_LOADER[ext](os.path.abspath(path))
+    if ext in supported_ext:
+        return EXT_TO_LOADER[ext](os.path.abspath(path))
+    raise ValueError(
+            f"{ext} not in supported extensions {supported_ext}"
+    )
+

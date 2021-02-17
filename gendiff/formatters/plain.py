@@ -19,6 +19,8 @@ TYPE_TO_STR = {
         ) + '\n' if ('children' in item) else ''
 }
 
+supported_types = list(TYPE_TO_STR.keys())
+
 
 def format_value(value):
     return '[complex value]' if isinstance(value, dict) \
@@ -31,5 +33,7 @@ def format_value(value):
 def format_diff(diff, parent=''):
     out = ''
     for item in diff:
+        if item['type'] not in supported_types:
+            raise ValueError('diff or formatter is broken')
         out += TYPE_TO_STR[item['type']](item, parent)
     return out.rstrip("\n")

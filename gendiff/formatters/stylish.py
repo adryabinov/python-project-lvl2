@@ -27,10 +27,14 @@ TYPE_TO_STR = {
         f"{format_value(item['value'], deep + 1)}"
 }
 
+supported_types = list(TYPE_TO_STR.keys())
+
 
 def format_diff(diff, deep=0, indent=INDENT):
     out = "{"
     for item in diff:
+        if item['type'] not in supported_types:
+            raise ValueError('diff or formatter is broken')
         out += TYPE_TO_STR[item['type']](item, deep)
     return f"{out}\n{deep * indent}}}"
 
