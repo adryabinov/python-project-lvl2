@@ -8,12 +8,12 @@ MAP_FORMAT_TO_FORMATTER = {
     'json': lambda x: format_json(x),
 }
 
-output_formats = list(MAP_FORMAT_TO_FORMATTER.keys())
+output_formats = MAP_FORMAT_TO_FORMATTER.keys()
 
 
 def format_diff(diff, formatter='stylish'):
-    if formatter in MAP_FORMAT_TO_FORMATTER.keys():
+    if formatter in output_formats:
         return MAP_FORMAT_TO_FORMATTER[formatter](diff)
     raise ValueError(
-        f"{formatter} not in supported formatters {output_formats}"
+        f"{formatter} not in supported formatters {''.join(output_formats)}"
     )
