@@ -2,26 +2,29 @@ def make_diff(data1, data2):
     diff = []
     for key in data1.keys() | data2.keys():
 
-        removed = data1.keys() - data2.keys()
-        added = data2.keys() - data1.keys()
-        unchanged = data2.keys() & data1.keys()
+        first_contain_only = data1.keys() - data2.keys()
+        second_contain_only = data2.keys() - data1.keys()
+        all_contain = data2.keys() & data1.keys()
 
-        if key in removed:
+        if key in first_contain_only:
             diff.append({
                 'name': key,
                 'value': data1[key],
                 'type': 'removed',
             })
 
-        if key in added:
+        if key in second_contain_only:
             diff.append({
                 'name': key,
                 'value': data2[key],
                 'type': 'added',
             })
 
-        if key in unchanged:
-            if isinstance(data1[key], dict) & isinstance(data2[key], dict):
+        if key in all_contain:
+            if (
+                isinstance(data1[key], dict)
+                & isinstance(data2[key], dict)
+            ):
                 diff.append({
                     'name': key,
                     'children': make_diff(data1[key], data2[key]),
