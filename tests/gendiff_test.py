@@ -32,11 +32,6 @@ def test_gendiff_all_supported_suffix(suffix):
     file_path_2 = make_path_to(f'file2{suffix}')
     for output_format in formats:
         diff = generate_diff(file_path_1, file_path_2, output_format)
-
-        if output_format == "json":
-            json_result = map_format_to_result[output_format]
-            assert json.loads(diff) == json.loads(json_result)
-            continue
         assert diff == map_format_to_result[output_format]
 
 
