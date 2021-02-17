@@ -1,32 +1,47 @@
-# content of sample_test.py
+import pytest
+import os
+from pathlib import Path
+import json
+from gendiff.comparator import generate_diff
+from gendiff.data_parser import supported_suffixes as suffixes
+from gendiff.formatter import output_formats as formats
 
-from gendiff import generate_diff
-
-
-def test_gendiff_compare_plain_is_empty():
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file1.json', 'plain') == ''
-
-
-def test_gendiff_stylish_default():
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file1.json', 'stylish') == \
-           generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file1.json')
+FIXTURES_DIR_REL = 'fixtures'
 
 
-def test_gendiff_yaml_load():
-    assert generate_diff('tests/fixtures/file1.yml', 'tests/fixtures/file2.yml', 'stylish') == \
-           generate_diff('tests/fixtures/file1.yaml', 'tests/fixtures/file2.yaml')
+def make_path_to(file_name):
+    self_dir_path = Path(__file__).absolute().parent
+    return os.path.join(self_dir_path, FIXTURES_DIR_REL, file_name)
 
 
-def test_gendiff_plain():
-    out = open('tests/fixtures/plain_out')
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json', 'plain') == out.read()
+def read_file_in(path):
+    f = open(path)
+    return f.read()
 
 
-def test_gendiff_stylish():
-    out = open('tests/fixtures/stylish_out')
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json') == out.read()
+map_format_to_result = {}
+for _ in formats:
+    map_format_to_result[_] = read_file_in(
+        make_path_to(f'{_}_out')
+    )
 
 
-def test_gendiff_json():
-    out = open('tests/fixtures/json_out')
-    assert generate_diff('tests/fixtures/file1.json', 'tests/fixtures/file2.json', 'json') == out.read()
+@pytest.mark.parametrize('suffix', suffixes)
+def test_gendiff_all_supported_suffix(suffix):
+    file_path_1 = make_path_to(f'file1{suffix}')
+    file_path_2 = make_path_to(f'file2{suffix}')
+    for output_format in formats:
+        diff = generate_diff(file_path_1, file_path_2, output_format)
+
+        if output_format == "json":
+            json_result = map_format_to_result[output_format]
+            assert json.loads(diff) == json.loads(json_result)
+            continue
+        assert diff == map_format_to_result[output_format]
+
+
+def test_gendiff_stylish_out_default():
+    file_path_1 = make_path_to('file1.json')
+    file_path_2 = make_path_to('file2.yaml')
+    diff = generate_diff(file_path_1, file_path_2)
+    assert diff == map_format_to_result['stylish']
