@@ -4,6 +4,7 @@ import yaml
 
 FORMAT_TO_PARSER = {
     'yaml': yaml.safe_load,
+    'yml': yaml.safe_load,
     'json': json.load,
 }
 

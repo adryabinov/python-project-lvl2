@@ -2,7 +2,7 @@ import pytest
 import os
 from pathlib import Path
 from gendiff.comparator import generate_diff
-from gendiff.comparator import supported_suffixes as suffixes
+from gendiff.parser import input_formats
 from gendiff.formatter import output_formats as formats
 
 FIXTURES_DIR = 'fixtures'
@@ -19,16 +19,16 @@ def read_file(path):
 
 
 map_format_to_result = {}
-for f in formats:
-    map_format_to_result[f] = read_file(
-        make_path(f'{f}_out')
+for output_format in formats:
+    map_format_to_result[output_format] = read_file(
+        make_path(f'{output_format}_out')
     )
 
 
-@pytest.mark.parametrize('suffix', suffixes)
-def test_gendiff_all(suffix):
-    file_path_1 = make_path(f'file1{suffix}')
-    file_path_2 = make_path(f'file2{suffix}')
+@pytest.mark.parametrize('input_format', input_formats)
+def test_gendiff_all(input_format):
+    file_path_1 = make_path(f'file1.{input_format}')
+    file_path_2 = make_path(f'file2.{input_format}')
     for output_format in formats:
         diff = generate_diff(file_path_1, file_path_2, output_format)
         assert diff == map_format_to_result[output_format]
