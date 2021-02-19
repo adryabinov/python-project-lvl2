@@ -1,19 +1,19 @@
-from gendiff.formatters.stylish import format_diff as format_stylish
-from gendiff.formatters.plain import format_diff as format_plain
-from gendiff.formatters.json import format_diff as format_json
+from gendiff.formatters.stylish import format_dict as format_stylish
+from gendiff.formatters.plain import format_dict as format_plain
+from gendiff.formatters.json import format_dict as format_json
 
-MAP_FORMAT_TO_FORMATTER = {
-    'stylish': lambda x: format_stylish(x),
-    'plain': lambda x: format_plain(x),
-    'json': lambda x: format_json(x),
+FORMAT_TO_FORMATTER = {
+    'stylish': format_stylish,
+    'plain': format_plain,
+    'json': format_json,
 }
 
-output_formats = MAP_FORMAT_TO_FORMATTER.keys()
+output_formats = FORMAT_TO_FORMATTER.keys()
 
 
-def format_diff(diff, formatter='stylish'):
-    if formatter in output_formats:
-        return MAP_FORMAT_TO_FORMATTER[formatter](diff)
+def format_dict(diff, output_format='stylish'):
+    if output_format in output_formats:
+        return FORMAT_TO_FORMATTER[output_format](diff)
     raise ValueError(
-        f"{formatter} not in supported formatters {''.join(output_formats)}"
+        f"{output_format} not in supported format's {''.join(output_formats)}"
     )

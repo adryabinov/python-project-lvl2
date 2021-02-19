@@ -1,9 +1,26 @@
 import os
-from gendiff.data_parser import suffix_to_format
-from gendiff.data_parser import parse_data
+from itertools import chain
 from pathlib import Path
-from gendiff.formatter import format_diff
+from gendiff.parser import parse_data
+from gendiff.formatter import format_dict
 from gendiff.diff_tree_maker import make_diff
+
+SUFFIX_TO_FORMAT = {
+    ('.yml', '.yaml'): 'yaml',
+    ('.json',): 'json',
+}
+
+supported_suffixes = list(chain(*SUFFIX_TO_FORMAT.keys()))
+
+
+def suffix_to_format(suffix):
+    for suffix_list in SUFFIX_TO_FORMAT:
+        if suffix in suffix_list:
+            return SUFFIX_TO_FORMAT[suffix_list]
+    raise ValueError(
+        f"can\'t translate {suffix} to format, "
+        f"sup this suffixes: {supported_suffixes}"
+    )
 
 
 def generate_diff(path1, path2, formatter='stylish'):
@@ -17,6 +34,6 @@ def generate_diff(path1, path2, formatter='stylish'):
     parsed_data2 = parse_data(data2, format2)
 
     diff = make_diff(parsed_data1, parsed_data2)
-    formated_diff = format_diff(diff, formatter)
+    formatted_diff = format_dict(diff, formatter)
 
-    return formated_diff
+    return formatted_diff
