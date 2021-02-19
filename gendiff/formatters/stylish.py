@@ -21,7 +21,7 @@ TYPE_TO_STR = {
     'nested':
         lambda item, deep, indent=INDENT:
         f"\n{deep * indent}{STAND}{item['name']}: "
-        f"{format_dict(item['children'], deep + 1)}",
+        f"{format_tree(item['children'], deep + 1)}",
     'unchanged':
         lambda item, deep, indent=INDENT:
         f"\n{deep * indent}{STAND}{item['name']}: "
@@ -31,9 +31,9 @@ TYPE_TO_STR = {
 supported_types = list(TYPE_TO_STR.keys())
 
 
-def format_dict(diff, deep=0, indent=INDENT):
+def format_tree(tree, deep=0, indent=INDENT):
     out = "{"
-    for item in diff:
+    for item in tree:
         if item['type'] not in supported_types:
             raise ValueError('diff or formatter is broken')
         out += TYPE_TO_STR[item['type']](item, deep)

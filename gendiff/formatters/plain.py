@@ -13,7 +13,7 @@ TYPE_TO_STR = {
         f" to {format_value(item['new_value'])}\n",
     'nested':
         lambda item, parent:
-        format_dict(
+        format_tree(
             item['children'],
             f"{parent}{item['name']}."
         ) + '\n',
@@ -31,9 +31,9 @@ def format_value(value):
         else f'\'{value}\''
 
 
-def format_dict(diff, parent=''):
+def format_tree(tree, parent=''):
     out = ''
-    for item in diff:
+    for item in tree:
         if item['type'] not in supported_types:
             raise ValueError('diff or formatter is broken')
         out += TYPE_TO_STR[item['type']](item, parent)

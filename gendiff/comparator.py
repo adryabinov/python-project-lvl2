@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from gendiff.parser import parse_data
-from gendiff.formatter import format_dict
+from gendiff.formatter import format_tree
 from gendiff.diff_tree_maker import make_diff
 
 
@@ -16,6 +16,6 @@ def generate_diff(path1, path2, formatter='stylish'):
     parsed_data2 = parse_data(data2, format2)
 
     diff = make_diff(parsed_data1, parsed_data2)
-    formatted_diff = format_dict(diff, formatter)
+    formatted_diff = format_tree(diff, formatter)
 
     return formatted_diff

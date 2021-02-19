@@ -1,5 +1,5 @@
 import json
 
 
-def format_dict(diff):
-    return json.dumps(diff)
+def format_tree(tree):
+    return json.dumps(tree)
