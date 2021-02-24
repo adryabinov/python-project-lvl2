@@ -1,26 +1,10 @@
-TYPE_TO_STR = {
-    'removed':
-        lambda item, path:
-        f"Property \'{path}{item['name']}\' was removed\n",
-    'added':
-        lambda item, path:
-        f"Property \'{path}{item['name']}\'"
-        f" was added with value: {format_value(item['value'])}\n",
-    'updated':
-        lambda item, path:
-        f"Property \'{path}{item['name']}\'"
-        f" was updated. From {format_value(item['old_value'])}"
-        f" to {format_value(item['new_value'])}\n",
-    'nested':
-        lambda item, path:
-        format_tree(
-            item['children'],
-            f"{path}{item['name']}."
-        ) + '\n',
-    'unchanged': lambda item, path: '',
+supported_types = {
+    'removed',
+    'added',
+    'updated',
+    'nested',
+    'unchanged'
 }
-
-supported_types = list(TYPE_TO_STR.keys())
 
 
 def format_value(value):
@@ -35,10 +19,25 @@ def format_value(value):
     return value
 
 
-def format_tree(tree, path=''):
-    out = []
-    for item in tree:
-        if item['type'] not in supported_types:
-            raise ValueError('diff or formatter is broken')
-        out += TYPE_TO_STR[item['type']](item, path)
-    return ''.join(out).rstrip("\n")
+def format_tree(tree):
+    def walk(in_tree, path=''):
+        out = []
+        for item in in_tree:
+            if item['type'] not in supported_types:
+                raise ValueError('diff or formatter is broken')
+            if item['type'] == 'removed':
+                out += f"Property \'{path}{item['name']}\' was removed\n"
+            if item['type'] == 'added':
+                out += f"Property \'{path}{item['name']}\'"
+                out += f" was added with value: {format_value(item['value'])}\n"
+            if item['type'] == 'updated':
+                out += f"Property \'{path}{item['name']}\'"
+                out += f" was updated. From {format_value(item['old_value'])}"
+                out += f" to {format_value(item['new_value'])}\n"
+            if item['type'] == 'nested':
+                out += (
+                        walk(item['children'], f"{path}{item['name']}.")
+                        + '\n'
+                )
+        return ''.join(out).rstrip("\n")
+    return walk(tree)
