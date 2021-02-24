@@ -36,8 +36,8 @@ def format_tree(tree):
                 out += f" was updated. From {format_value(item['old_value'])}"
                 out += f" to {format_value(item['new_value'])}\n"
             if item['type'] == 'nested':
-                out += (
-                        walk(item['children'], f"{path}{item['name']}.") + '\n'
-                )
+                out += (walk(
+                    item['children'],
+                    f"{path}{item['name']}.") + '\n')
         return ''.join(out).rstrip("\n")
     return walk(tree)
