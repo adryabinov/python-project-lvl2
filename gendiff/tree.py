@@ -15,7 +15,8 @@ def make_diff(data1, data2):
                 'type': 'added',
             })
             continue
-        if isinstance(data1[key], dict) & isinstance(data2[key], dict):
+        if (isinstance(data1[key], dict)
+                & isinstance(data2[key], dict)):
             diff.append({
                 'name': key,
                 'children': make_diff(data1[key], data2[key]),

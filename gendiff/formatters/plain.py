@@ -29,7 +29,8 @@ def format_tree(tree):
                 out += f"Property \'{path}{item['name']}\' was removed\n"
             if item['type'] == 'added':
                 out += f"Property \'{path}{item['name']}\'"
-                out += f" was added with value: {format_value(item['value'])}\n"
+                out += ' was added with value: '
+                out += f"{format_value(item['value'])}\n"
             if item['type'] == 'updated':
                 out += f"Property \'{path}{item['name']}\'"
                 out += f" was updated. From {format_value(item['old_value'])}"
