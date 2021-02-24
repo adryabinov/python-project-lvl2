@@ -1,19 +1,14 @@
 def make_diff(data1, data2):
-
     diff = []
-    all_contain = data1.keys() | data2.keys()
-    first_contain_only = data1.keys() - data2.keys()
-    second_contain_only = data2.keys() - data1.keys()
-
-    for key in sorted(all_contain):
-        if key in first_contain_only:
+    for key in sorted(data1.keys() | data2.keys()):
+        if key not in data2.keys():
             diff.append({
                 'name': key,
                 'value': data1[key],
                 'type': 'removed',
             })
             continue
-        if key in second_contain_only:
+        if key not in data1.keys():
             diff.append({
                 'name': key,
                 'value': data2[key],

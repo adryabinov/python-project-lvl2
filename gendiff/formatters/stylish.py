@@ -23,9 +23,9 @@ TYPE_TO_STR = {
         f"\n{deep * indent}{STAND}{item['name']}: "
         f"{format_tree(item['children'], deep + 1)}",
     'unchanged':
-        lambda item, deep, indent=INDENT:
-        f"\n{deep * indent}{STAND}{item['name']}: "
-        f"{format_value(item['value'], deep + 1)}",
+        lambda item, depth, indent=INDENT:
+        f"\n{depth * indent}{STAND}{item['name']}: "
+        f"{format_value(item['value'], depth + 1)}",
 }
 
 supported_types = list(TYPE_TO_STR.keys())
