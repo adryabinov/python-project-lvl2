@@ -28,9 +28,10 @@ def normalize_values(
     max_length = min_size if (min_size > max_length_in_fixes)\
         else max_length_in_fixes
     for key in structure:
-        structure[key] = (f"{INDENT_TYPE * (max_length - len(structure[key]) - 1)}"
-                          f"{structure[key]}"
-                          f"{INDENT_TYPE}")
+        structure[key] = (
+            f"{INDENT_TYPE * (max_length - len(structure[key]) - 1)}"
+            f"{structure[key]}"
+            f"{INDENT_TYPE}")
     return structure
 
 
