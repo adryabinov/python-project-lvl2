@@ -2,11 +2,10 @@ INDENT_TYPE = ' '
 INDENT_SIZE = 4
 FIX_MIN_SIZE = 4
 FIXES = {
-    'REMOVED': '- ',
-    'ADDED': '+ ',
-    'STAND': '  ',
+    'REMOVED': '-',
+    'ADDED': '+',
+    'STAND': ' ',
 }
-
 
 supported_types = {
     'removed',
@@ -23,24 +22,30 @@ def get_max_item_length(structure):
 
 
 def normalize_values(
-        fixes=FIXES,
+        structure,
         min_size=FIX_MIN_SIZE):
-    max_length_in_fixes = get_max_item_length(fixes)
+    max_length_in_fixes = get_max_item_length(structure)
     max_length = min_size if (min_size > max_length_in_fixes)\
         else max_length_in_fixes
-    for key in fixes:
-        fixes[key] = ' ' * (max_length - len(fixes[key])) + fixes[key]
-    return fixes
+    for key in structure:
+        structure[key] = (f"{INDENT_TYPE * (max_length - len(structure[key]) - 1)}"
+                          f"{structure[key]}"
+                          f"{INDENT_TYPE}")
+    return structure
+
+
+normalized_fixes = normalize_values(FIXES)
+fixes_size = get_max_item_length(normalized_fixes)
 
 
 def make_indent(depth,
                 fix=None,
+                fixes=normalized_fixes,
+                fix_size=fixes_size,
                 indent_size=INDENT_SIZE,
                 indent_type=INDENT_TYPE):
-    normalized_fixes = normalize_values(FIXES)
-    fix_size = get_max_item_length(normalized_fixes)
     dynamic_part = (depth - 1) * indent_size * indent_type
-    fix_part = normalized_fixes[fix] if fix else fix_size * indent_type
+    fix_part = fixes[fix] if fix else fix_size * indent_type
     return f"{dynamic_part}{fix_part}"
 
 
