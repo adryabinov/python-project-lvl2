@@ -55,7 +55,11 @@ def format_value(value, depth):
     return str(value)
 
 
-def make_indent(depth, fix=None):
-    dynamic_part = (depth - 1) * INDENT_SIZE * INDENT_TYPE
-    fix_part = fix if fix else FIX_SIZE * INDENT_TYPE
+def make_indent(depth,
+                fix=None,
+                indent_size=INDENT_SIZE,
+                indent_type=INDENT_TYPE,
+                fix_size=FIX_SIZE):
+    dynamic_part = (depth - 1) * indent_size * indent_type
+    fix_part = fix if fix else fix_size * indent_type
     return f"{dynamic_part}{fix_part}"
