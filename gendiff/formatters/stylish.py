@@ -2,9 +2,9 @@ INDENT_TYPE = ' '
 INDENT_SIZE = 4
 FIX_MIN_SIZE = 4
 FIXES = {
-    'REMOVED': '-',
-    'ADDED': '+',
-    'STAND': ' ',
+    'REMOVED': 'убрали',
+    'ADDED': 'добавили хуйни',
+    'STAND': 'оставили эту гадость',
 }
 
 supported_types = {
@@ -17,7 +17,10 @@ supported_types = {
 
 
 def get_max_item_length(structure):
-    max_to_min_keys = sorted(structure, key=lambda fix: len(fix), reverse=True)
+    max_to_min_keys = list(sorted(
+        structure,
+        key=lambda fix: len(structure[fix]),
+        reverse=True))
     return len(structure[max_to_min_keys[0]])
 
 
@@ -26,7 +29,7 @@ def normalize_values(
         min_size=FIX_MIN_SIZE):
     max_length_in_fixes = get_max_item_length(structure)
     max_length = min_size if (min_size > max_length_in_fixes)\
-        else max_length_in_fixes
+        else max_length_in_fixes + 1
     for key in structure:
         structure[key] = (
             f"{INDENT_TYPE * (max_length - len(structure[key]) - 1)}"
