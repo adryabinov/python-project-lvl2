@@ -46,7 +46,7 @@ def format_value(value, depth):
         for key in value:
             out += f"\n{make_indent(depth + 1, STAND)}{key}: "
             out += f"{format_value(value[key], depth + 1)}"
-        return f"{{{''.join(out)}\n{make_indent(depth)}}}"
+        return f"{{{''.join(out)}\n{make_indent(depth, STAND)}}}"
     if isinstance(value, bool):
         return str(value).lower()
     if value is None:
