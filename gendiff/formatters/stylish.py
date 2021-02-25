@@ -1,7 +1,7 @@
 INDENT_TYPE = ' '
 INDENT_SIZE = 4
 FIX_MIN_SIZE = 4
-FIXES = {
+TYPE_TO_FIXES = {
     'REMOVED': '-',
     'ADDED': '+',
     'STAND': ' ',
@@ -38,7 +38,7 @@ def normalize_values(
     return structure
 
 
-normalized_fixes = normalize_values(FIXES)
+normalized_fixes = normalize_values(TYPE_TO_FIXES)
 fixes_size = get_max_item_length(normalized_fixes)
 
 
