@@ -2,9 +2,9 @@ INDENT_TYPE = ' '
 INDENT_SIZE = 4
 FIX_MIN_SIZE = 4
 FIXES = {
-    'REMOVED': 'убрали',
-    'ADDED': 'добавили хуйни',
-    'STAND': 'оставили эту гадость',
+    'REMOVED': '-',
+    'ADDED': '+',
+    'STAND': ' ',
 }
 
 supported_types = {
