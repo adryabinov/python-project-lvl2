@@ -1,5 +1,6 @@
 INDENT_TYPE = ' '
 INDENT_SIZE = 4
+FIX_SIZE = 4
 REMOVED = '  - '
 ADDED = '  + '
 STAND = '    '
@@ -32,12 +33,12 @@ def format_tree(tree):
                 out += f"{format_value(item['new_value'], depth)}"
             if item['type'] == 'nested':
                 out += f"\n{make_indent(depth, STAND)}{item['name']}: "
-                out += f"{walk(item['children'], depth + 1)}"
+                out += f"{{{walk(item['children'], depth + 1)}}}"
             if item['type'] == 'unchanged':
                 out += f"\n{make_indent(depth, STAND)}{item['name']}: "
                 out += f"{format_value(item['value'], depth)}"
-        return f"{{{''.join(out)}\n{make_indent(depth - 1)}}}"
-    return walk(tree)
+        return f"{''.join(out)}\n{make_indent(depth-1)}"
+    return f"{{{walk(tree).rstrip(' ')}}}"
 
 
 def format_value(value, depth):
@@ -46,7 +47,7 @@ def format_value(value, depth):
         for key in value:
             out += f"\n{make_indent(depth + 1, STAND)}{key}: "
             out += f"{format_value(value[key], depth + 1)}"
-        return f"{{{''.join(out)}\n{make_indent(depth, STAND)}}}"
+        return f"{{{''.join(out)}\n{make_indent(depth)}}}"
     if isinstance(value, bool):
         return str(value).lower()
     if value is None:
@@ -54,7 +55,7 @@ def format_value(value, depth):
     return str(value)
 
 
-def make_indent(depth, difficult=None):
-    if difficult:
-        return ((depth - 1) * INDENT_SIZE * INDENT_TYPE) + difficult
-    return depth * INDENT_SIZE * INDENT_TYPE
+def make_indent(depth, fix=None):
+    if fix:
+        return ((depth - 1) * INDENT_SIZE * INDENT_TYPE) + fix
+    return (depth - 1) * INDENT_SIZE * INDENT_TYPE + (FIX_SIZE * INDENT_TYPE)
