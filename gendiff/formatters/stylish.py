@@ -53,6 +53,20 @@ def make_indent(depth,
     return f"{dynamic_part}{fix_part}"
 
 
+def stringify(value, depth):
+    if isinstance(value, dict):
+        out = []
+        for key in value:
+            out += f"\n{make_indent(depth + 1, 'STAND')}{key}: "
+            out += f"{stringify(value[key], depth + 1)}"
+        return f"{{{''.join(out)}\n{make_indent(depth)}}}"
+    if isinstance(value, bool):
+        return str(value).lower()
+    if value is None:
+        return 'null'
+    return str(value)
+
+
 def format_tree(tree):
     def walk(in_tree, depth=1):
         out = []
@@ -78,17 +92,3 @@ def format_tree(tree):
                 out += f"{stringify(item['value'], depth)}"
         return f"{''.join(out)}\n{make_indent(depth-1)}"
     return f"{{{walk(tree).rstrip(' ')}}}"
-
-
-def stringify(value, depth):
-    if isinstance(value, dict):
-        out = []
-        for key in value:
-            out += f"\n{make_indent(depth + 1, 'STAND')}{key}: "
-            out += f"{stringify(value[key], depth + 1)}"
-        return f"{{{''.join(out)}\n{make_indent(depth)}}}"
-    if isinstance(value, bool):
-        return str(value).lower()
-    if value is None:
-        return 'null'
-    return str(value)

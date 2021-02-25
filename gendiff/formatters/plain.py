@@ -7,7 +7,7 @@ supported_types = {
 }
 
 
-def format_value(value):
+def stringify(value):
     if isinstance(value, dict):
         return '[complex value]'
     if isinstance(value, bool):
@@ -30,11 +30,11 @@ def format_tree(tree):
             if item['type'] == 'added':
                 out += f"Property \'{path}{item['name']}\'"
                 out += ' was added with value: '
-                out += f"{format_value(item['value'])}\n"
+                out += f"{stringify(item['value'])}\n"
             if item['type'] == 'updated':
                 out += f"Property \'{path}{item['name']}\'"
-                out += f" was updated. From {format_value(item['old_value'])}"
-                out += f" to {format_value(item['new_value'])}\n"
+                out += f" was updated. From {stringify(item['old_value'])}"
+                out += f" to {stringify(item['new_value'])}\n"
             if item['type'] == 'nested':
                 out += (walk(
                     item['children'],
