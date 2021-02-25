@@ -17,7 +17,7 @@ supported_types = {
 
 
 def get_max_item_length(structure):
-    max_to_min_keys = sorted(structure, key=lambda fix: len(fix))
+    max_to_min_keys = sorted(structure, key=lambda fix: len(fix), reverse=True)
     return len(structure[max_to_min_keys[0]])
 
 
