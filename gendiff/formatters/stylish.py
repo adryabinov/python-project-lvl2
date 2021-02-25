@@ -56,6 +56,6 @@ def format_value(value, depth):
 
 
 def make_indent(depth, fix=None):
-    if fix:
-        return ((depth - 1) * INDENT_SIZE * INDENT_TYPE) + fix
-    return (depth - 1) * INDENT_SIZE * INDENT_TYPE + (FIX_SIZE * INDENT_TYPE)
+    dynamic_part = (depth - 1) * INDENT_SIZE * INDENT_TYPE
+    fix_part = fix if fix else FIX_SIZE * INDENT_TYPE
+    return f"{dynamic_part}{fix_part}"
