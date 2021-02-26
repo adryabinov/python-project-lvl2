@@ -5,7 +5,11 @@ from gendiff.formatter import format_tree
 from gendiff.tree import make_diff
 
 
-def generate_diff(path1, path2, formatter='stylish'):
+def get_format(path):
+    return Path(path).suffix.lower()[1:]
+
+
+def generate_diff(path1, path2, out_format='stylish'):
     data1 = open(os.path.abspath(path1))
     data2 = open(os.path.abspath(path2))
 
@@ -16,10 +20,6 @@ def generate_diff(path1, path2, formatter='stylish'):
     parsed_data2 = parse_data(data2, format2)
 
     diff = make_diff(parsed_data1, parsed_data2)
-    formatted_diff = format_tree(diff, formatter)
+    formatted_diff = format_tree(diff, out_format)
 
     return formatted_diff
-
-
-def get_format(path):
-    return Path(path).suffix.lower()[1:]

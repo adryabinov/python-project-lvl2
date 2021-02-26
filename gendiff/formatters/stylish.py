@@ -1,11 +1,5 @@
 INDENT_TYPE = ' '
 INDENT_SIZE = 4
-FIX_MIN_SIZE = 4
-TYPE_TO_FIXES = {
-    'REMOVED': '-',
-    'ADDED': '+',
-    'STAND': ' ',
-}
 
 supported_types = {
     'removed',
@@ -15,51 +9,21 @@ supported_types = {
     'unchanged'
 }
 
-
-def get_max_item_length(structure):
-    max_to_min_keys = list(sorted(
-        structure,
-        key=lambda fix: len(structure[fix]),
-        reverse=True))
-    return len(structure[max_to_min_keys[0]])
-
-
-def normalize_values(
-        structure,
-        min_size=FIX_MIN_SIZE):
-    max_length_in_fixes = get_max_item_length(structure)
-    max_length = min_size if (min_size > max_length_in_fixes)\
-        else max_length_in_fixes + 1
-    for key in structure:
-        structure[key] = (
-            f"{INDENT_TYPE * (max_length - len(structure[key]) - 1)}"
-            f"{structure[key]}"
-            f"{INDENT_TYPE}")
-    return structure
-
-
-normalized_fixes = normalize_values(TYPE_TO_FIXES)
-fixes_size = get_max_item_length(normalized_fixes)
-
-
-def make_indent(depth,
-                fix=None,
-                fixes=normalized_fixes,
-                fix_size=fixes_size,
-                indent_size=INDENT_SIZE,
-                indent_type=INDENT_TYPE):
-    dynamic_part = (depth - 1) * indent_size * indent_type
-    fix_part = fixes[fix] if fix else fix_size * indent_type
-    return f"{dynamic_part}{fix_part}"
+def make_indent(
+        depth,
+        indent=INDENT_TYPE,
+        size=INDENT_SIZE):
+    return  depth * size * indent
 
 
 def stringify(value, depth):
     if isinstance(value, dict):
         out = []
         for key in value:
-            out += f"\n{make_indent(depth + 1, 'STAND')}{key}: "
-            out += f"{stringify(value[key], depth + 1)}"
-        return f"{{{''.join(out)}\n{make_indent(depth)}}}"
+            out.append(
+                f"\n{make_indent(depth + 1)}    {key}: "
+                f"{stringify(value[key], depth + 1)}")
+        return f"{{{''.join(out)}\n{make_indent(depth + 1)}}}"
     if isinstance(value, bool):
         return str(value).lower()
     if value is None:
@@ -68,27 +32,34 @@ def stringify(value, depth):
 
 
 def format_tree(tree):
-    def walk(in_tree, depth=1):
-        out = []
-        for item in in_tree:
-            if item['type'] not in supported_types:
-                raise ValueError('diff or formatter is broken')
-            if item['type'] == 'removed':
-                out += f"\n{make_indent(depth, 'REMOVED')}{item['name']}: "
-                out += f"{stringify(item['value'], depth)}"
-            if item['type'] == 'added':
-                out += f"\n{make_indent(depth, 'ADDED')}{item['name']}: "
-                out += f"{stringify(item['value'], depth)}"
-            if item['type'] == 'updated':
-                out += f"\n{make_indent(depth, 'REMOVED')}{item['name']}: "
-                out += f"{stringify(item['old_value'], depth)}"
-                out += f"\n{make_indent(depth, 'ADDED')}{item['name']}: "
-                out += f"{stringify(item['new_value'], depth)}"
-            if item['type'] == 'nested':
-                out += f"\n{make_indent(depth, 'STAND')}{item['name']}: "
-                out += f"{{{walk(item['children'], depth + 1)}}}"
-            if item['type'] == 'unchanged':
-                out += f"\n{make_indent(depth, 'STAND')}{item['name']}: "
-                out += f"{stringify(item['value'], depth)}"
-        return f"{''.join(out)}\n{make_indent(depth-1)}"
+    def walk(nodes, depth=0):
+        view = []
+        for node in nodes:
+            if node['type'] not in supported_types:
+                raise ValueError(
+                    f"diff is broken: node type '{node}' not in supported types: "
+                    f"{' '.join(supported_types)}")
+            if node['type'] == 'removed':
+                view.append(
+                    f"\n{make_indent(depth)}  - {node['name']}: "
+                    f"{stringify(node['value'], depth)}")
+            if node['type'] == 'added':
+                view.append(
+                    f"\n{make_indent(depth)}  + {node['name']}: "
+                    f"{stringify(node['value'], depth)}")
+            if node['type'] == 'updated':
+                view.append(
+                    f"\n{make_indent(depth)}  - {node['name']}: "
+                    f"{stringify(node['old_value'], depth)}"
+                    f"\n{make_indent(depth)}  + {node['name']}: "
+                    f"{stringify(node['new_value'], depth)}")
+            if node['type'] == 'nested':
+                view.append(
+                    f"\n{make_indent(depth)}    {node['name']}: "
+                    f"{{{walk(node['children'], depth + 1)}}}")
+            if node['type'] == 'unchanged':
+                view.append(
+                    f"\n{make_indent(depth)}    {node['name']}: "
+                    f"{stringify(node['value'], depth)}")
+        return f"{''.join(view)}\n{make_indent(depth)}"
     return f"{{{walk(tree).rstrip(' ')}}}"

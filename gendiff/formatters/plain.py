@@ -20,24 +20,29 @@ def stringify(value):
 
 
 def format_tree(tree):
-    def walk(in_tree, path=''):
-        out = []
-        for item in in_tree:
-            if item['type'] not in supported_types:
-                raise ValueError('diff or formatter is broken')
-            if item['type'] == 'removed':
-                out += f"Property \'{path}{item['name']}\' was removed\n"
-            if item['type'] == 'added':
-                out += f"Property \'{path}{item['name']}\'"
-                out += ' was added with value: '
-                out += f"{stringify(item['value'])}\n"
-            if item['type'] == 'updated':
-                out += f"Property \'{path}{item['name']}\'"
-                out += f" was updated. From {stringify(item['old_value'])}"
-                out += f" to {stringify(item['new_value'])}\n"
-            if item['type'] == 'nested':
-                out += (walk(
-                    item['children'],
-                    f"{path}{item['name']}.") + '\n')
-        return ''.join(out).rstrip("\n")
+    def walk(nodes, path=''):
+        view = []
+        for node in nodes:
+            if node['type'] not in supported_types:
+                raise ValueError(
+                    f"diff is broken: node type {node} not in supported types: "
+                    f"{' '.join(supported_types)}")
+            if node['type'] == 'removed':
+                view.append(
+                    f"Property \'{path}{node['name']}\' was removed\n")
+            if node['type'] == 'added':
+                view.append(
+                    f"Property \'{path}{node['name']}\'"
+                    ' was added with value: '
+                    f"{stringify(node['value'])}\n")
+            if node['type'] == 'updated':
+                view.append(
+                    f"Property \'{path}{node['name']}\'"
+                    f" was updated. From {stringify(node['old_value'])}"
+                    f" to {stringify(node['new_value'])}\n")
+            if node['type'] == 'nested':
+                view.append(walk(
+                    node['children'],
+                    f"{path}{node['name']}.") + '\n')
+        return ''.join(view).rstrip("\n")
     return walk(tree)
