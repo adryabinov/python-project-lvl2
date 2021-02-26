@@ -9,11 +9,12 @@ supported_types = {
     'unchanged'
 }
 
+
 def make_indent(
         depth,
         indent=INDENT_TYPE,
         size=INDENT_SIZE):
-    return  depth * size * indent
+    return depth * size * indent
 
 
 def stringify(value, depth):
