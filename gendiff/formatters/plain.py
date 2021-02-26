@@ -25,7 +25,8 @@ def format_tree(tree):
         for node in nodes:
             if node['type'] not in supported_types:
                 raise ValueError(
-                    f"diff is broken: node type {node} not in supported types: "
+                    f"diff is broken: node type {node} "
+                    f"not in supported types: "
                     f"{' '.join(supported_types)}")
             if node['type'] == 'removed':
                 view.append(
