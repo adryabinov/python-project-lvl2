@@ -26,7 +26,7 @@ for output_format in formats:
 
 
 @pytest.mark.parametrize('input_format', input_formats)
-def test_gendiff_all(input_format):
+def test_gendiff_format(input_format):
     file_path_1 = make_path(f'file1.{input_format}')
     file_path_2 = make_path(f'file2.{input_format}')
     for output_format in formats:
@@ -34,7 +34,7 @@ def test_gendiff_all(input_format):
         assert diff == map_format_to_result[output_format]
 
 
-def test_gendiff_stylish_out_default():
+def test_gendiff_default_out():
     file_path_1 = make_path('file1.json')
     file_path_2 = make_path('file2.yaml')
     diff = generate_diff(file_path_1, file_path_2)
